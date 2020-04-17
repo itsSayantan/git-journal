@@ -1,0 +1,27 @@
+{
+  "name": "git-notes",
+  "version": "1.0.0",
+  "description": "Take notes with Git",
+  "main": "app.js",
+  "bin": {
+    "git-notes": "app.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsSayantan/git-notes.git"
+  },
+  "keywords": [
+    "notes",
+    "git",
+    "git-notes"
+  ],
+  "author": "Sayantan Ghosh <sayantan.ghosh03@gmail.com> (https://sayantan-ghosh.herokuapp.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itsSayantan/git-notes/issues"
+  },
+  "homepage": "https://github.com/itsSayantan/git-notes#readme"
+}
