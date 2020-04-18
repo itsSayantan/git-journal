@@ -1,4 +1,5 @@
 const cp = require('child_process')
+const fs = require('fs')
 
 /**
  * 
@@ -21,19 +22,33 @@ const deleteEverythingFromFolder = (folderPath) => {
  * @param {string} folderPath folder which needs to be initialized as a git repository
  */
 const initializeGitRepository = (folderPath) => {
-    cp.exec(`cd ${folderPath} && git init`, (errorFromCreatingGitRepository, dataFromCreatingGitRepository) => {
-        if (errorFromCreatingGitRepository) {
-            dl(errorFromCreatingGitRepository)
+    cp.execSync(`cd ${folderPath} && git init`)
+}
 
-            // fatal error, close the application
-            process.exit()
-        } else {
-            dl(dataFromCreatingGitRepository)
+/**
+ * 
+ * @param {string} folderPath path to the folder where the data files need to be created
+ * @param {boolean} dontCreateIfExists if, true, the data files wont be created if they are already present
+ */
+const createDataFiles = (folderPath, dontCreateIfExists = false) => {
+    const dataFilesList = ['notes.json']
+
+    const l = dataFilesList.length
+
+    for (let i = 0; i < l; ++i) {
+        const dataFile = dataFilesList[i];
+
+        if (dontCreateIfExists) {
+            if (fs.existsSync(folderPath + '/' + dataFile))
+                continue
         }
-    })
+        
+        fs.writeFileSync(folderPath + '/' + dataFile, '')
+    }
 }
 
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
+    createDataFiles,
 }

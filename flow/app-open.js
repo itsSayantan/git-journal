@@ -2,7 +2,7 @@ const cp = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
-const { deleteEverythingFromFolder, initializeGitRepository, } = require('../utils');
+const { deleteEverythingFromFolder, initializeGitRepository, createDataFiles, } = require('../utils');
 
 const appOpen = () => {
     cp.exec('git --version', (errorFromCheckingGitVersion, dataFromCheckingGitVersion) => {
@@ -62,8 +62,11 @@ const appOpen = () => {
 
                     // at this point, .data/git-notes-data should exist and git-notes-data should be a valid git repository.
 
-                    // @TODO check if all the data files are present inside the git-notes-data folder,
+                    // check if all the data files are present inside the git-notes-data folder,
                     // if no, create all the necessary files.
+                    dl('Checking if data files are present inside the git-notes-data folder. Will create only if they are not present')
+                    createDataFiles(gitNotesFolderPath, true)
+                    dl('Checked if data files are present inside the git-notes-data folder. Necesasary actions taken')
                 }
             })
         } else {
@@ -76,11 +79,17 @@ const appOpen = () => {
 
             dl('Creating git-notes-data folder inside the .data folder...')
             fs.mkdirSync(gitNotesFolderPath)
-            dl('git-notes-data folder created.')
+            dl('Created git-notes-data folder inside the .data folder')
 
             // initialize git-notes-data as a git repository
             dl('Initializing git-notes-data as a git repository')
             initializeGitRepository(gitNotesFolderPath)
+            dl('Initialized git-notes-data as a git repository')
+
+            // create all the data files inside the git-notes-data folder.
+            dl('Creating the data files')
+            createDataFiles(gitNotesFolderPath, false)
+            dl('Created the data files')
         }
     })
 }
