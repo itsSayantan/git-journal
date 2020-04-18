@@ -15,8 +15,11 @@ const authorInformation = `\nAuthor: Sayantan Ghosh\nWebiste: https://sayantan-g
 const helpInformation = `\nEnter command: 'help' to get the list of commands or enter 'exit' to exit the application.`
 
 const welcome = () => {
-    // show the welcome message
-    console.clear()
+    // show the welcome message, only if the application is not being run in the debug mode
+
+    if (process.env.NODE_DEBUG !== 'git-notes')
+        console.clear()
+
     console.log(welcomeMessage)
 
     // show the project information

@@ -47,8 +47,39 @@ const createDataFiles = (folderPath, dontCreateIfExists = false) => {
     }
 }
 
+/**
+ * 
+ * @param {string} rawCommandString raw command string to be parsed
+ */
+const parseRawCommand = (rawCommandString='') => {
+    // trim all the leading and trailing white spaces from the raw command string
+
+    dl(`Raw command string: ${rawCommandString}`)
+    const trimmedCommandString = rawCommandString.trim()
+
+    dl(`Trimmed raw command string: ${trimmedCommandString}`)
+
+    if (trimmedCommandString.length === 0) {
+        dl(`The trimmed command was empty`)
+        return {
+            mainCommand: null,
+            commandArguments: []
+        }
+    } else {
+        const parsedCommandArray = trimmedCommandString.split(' ')
+        const [, ...rest] = parsedCommandArray
+        dl(`Parsed command array: ${parsedCommandArray}`)
+
+        return {
+            mainCommand: parsedCommandArray[0],
+            commandArguments: rest
+        }
+    }
+}
+
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
     createDataFiles,
+    parseRawCommand,
 }

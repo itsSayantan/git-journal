@@ -6,28 +6,53 @@ const readline = require("readline");
 const { appOpen } = require('./flow/app-open')
 const { welcome } = require('./flow/welcome')
 
+const { parseRawCommand } = require('./utils')
+
 const dl = util.debuglog('git-notes')
 global.dl = dl
 
-// inititate the app-open flow
-appOpen()
+// main function to initialize the application
+const init = async () => {
+    // inititate the app-open flow
+    const responseFromAppOpenFlow = await appOpen()
 
-// intitate the welcome flow
-welcome()
+    if (responseFromAppOpenFlow === true) {
+        // intitate the welcome flow
+        welcome()
 
-// show the prompt
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+        // give a gap
+        console.log('\n'.repeat(1))
 
-rl.question("Enter a command:", function(rawCommand) {
-    console.log(rawCommand)
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
 
-    // @TODO parse the command
-});
+        const showAppCommandPrompt = () => {
+            rl.question("Enter a command: ", function(rawCommand) {
+                console.log(rawCommand)
 
-rl.on("close", function() {
-    console.log("\nBYE BYE !!!");
-    process.exit(0);
-});
+                // parse the command
+                console.log(parseRawCommand(rawCommand))
+
+
+                showAppCommandPrompt()
+            });
+        }
+
+        // initiate the app command prompt
+        showAppCommandPrompt()
+
+        rl.on("close", function() {
+            console.log("\nExiting git-notes. Mischief managed !!");
+            process.exit();
+        });
+    } else {
+        // something went wrong in the app open flow
+        dl('app-open flow failed')
+        process.exit()
+    }
+}
+
+// call the init method
+init()
