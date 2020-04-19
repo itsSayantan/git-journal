@@ -1,6 +1,8 @@
 const cp = require('child_process')
 const fs = require('fs')
 
+const { commandMap } = require('./commands')
+
 /**
  * 
  * @param {string} folderPath folder inside which everything will be deleted
@@ -77,9 +79,66 @@ const parseRawCommand = (rawCommandString='') => {
     }
 }
 
+/**
+ * 
+ * @param {{mainCommand: string, commandArguments: Array<string>}} parsedCommand parsed command object, result of parseRawCommad(rawCommandString)
+ */
+const executeCommand = (parsedCommand) => {
+    return new Promise(async (resolve, reject) => {
+        // check if the parsedCommand argument has a 'mainCommand' key
+        const mainCommand = parsedCommand.mainCommand
+        if (typeof mainCommand === 'string') {
+            // check if mainCommand exists in the command map
+            const commandMapEntry = commandMap[mainCommand]
+            if (commandMapEntry) {
+                // execute the command callback in commandMapEntry
+
+                try {
+                    const commandResponse = await commandMapEntry.execute(parsedCommand.commandArguments)
+
+                    resolve({
+                        status: true,
+                        message: commandResponse,
+                    })
+                } catch(errorFromCommandCallback) {
+                    reject({
+                        status: false,
+                        commandError: errorFromCommandCallback,
+                        message: `Command ${mainCommand} failed. Check the 'commandError' key for more details.`
+                    })
+                }
+
+            } else {
+                reject({
+                    status: false,
+                    message: 'Invalid mainCommand'
+                })
+            }
+        } else {
+            reject({
+                status: false,
+                message: 'Invalid parsedCommandInput'
+            })
+        }
+    })
+}
+
+/**
+ * 
+ * @param {{status: boolean, message: string}} commandResponse command response received as a result of executeCommand(parsedCommad)
+ */
+const showCommandResponse = (commandResponse) => {
+    console.log('\n***************************************************************************************************')
+    console.log(`Status: ${commandResponse.status}`)
+    console.log(`Command Response Message: ${JSON.stringify(commandResponse.message)}`)
+    console.log('\n***************************************************************************************************')
+}
+
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
     createDataFiles,
     parseRawCommand,
+    executeCommand,
+    showCommandResponse,
 }

@@ -6,7 +6,7 @@ const readline = require("readline");
 const { appOpen } = require('./flow/app-open')
 const { welcome } = require('./flow/welcome')
 
-const { parseRawCommand } = require('./utils')
+const { parseRawCommand, executeCommand, showCommandResponse, } = require('./utils')
 
 const dl = util.debuglog('git-notes')
 global.dl = dl
@@ -28,13 +28,27 @@ const init = async () => {
             output: process.stdout
         });
 
+        // set the rl to global as it will be used by other modules
+        global.rl = rl
+
         const showAppCommandPrompt = () => {
-            rl.question("Enter a command: ", function(rawCommand) {
-                console.log(rawCommand)
-
+            rl.question("Enter a command: ", async function(rawCommand) {
                 // parse the command
-                console.log(parseRawCommand(rawCommand))
+                const parsedCommand = parseRawCommand(rawCommand)
 
+                // execute the parsed command
+                try {
+                    const commandResponse = await executeCommand(parsedCommand)
+
+                    dl(`executeCommand successful with response: ${JSON.stringify(commandResponse)}`)
+                    
+                    if (commandResponse.status === true) {
+                        showCommandResponse(commandResponse)
+                    }
+                } catch(errorFromExecuteCommand) {
+                    dl(`executeCommand error: ${JSON.stringify(errorFromExecuteCommand)} `)
+                    showCommandResponse(errorFromExecuteCommand)
+                }
 
                 showAppCommandPrompt()
             });
