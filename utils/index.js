@@ -104,20 +104,20 @@ const executeCommand = (parsedCommand) => {
                     reject({
                         status: false,
                         commandError: errorFromCommandCallback,
-                        message: `Command ${mainCommand} failed. Check the 'commandError' key for more details.`
+                        message: `Command ${mainCommand} failed.`
                     })
                 }
 
             } else {
                 reject({
                     status: false,
-                    message: 'Invalid mainCommand'
+                    message: 'Command does not exist.'
                 })
             }
         } else {
             reject({
                 status: false,
-                message: 'Invalid parsedCommandInput'
+                message: 'Invalid command input.'
             })
         }
     })
@@ -128,10 +128,10 @@ const executeCommand = (parsedCommand) => {
  * @param {{status: boolean, message: string}} commandResponse command response received as a result of executeCommand(parsedCommad)
  */
 const showCommandResponse = (commandResponse) => {
-    console.log('\n***************************************************************************************************')
-    console.log(`Status: ${commandResponse.status}`)
-    console.log(`Command Response Message: ${JSON.stringify(commandResponse.message)}`)
-    console.log('\n***************************************************************************************************')
+    if (commandResponse.status === false && commandResponse.commandError) {
+        console.log(`Commnad Error: ${commandResponse.commandError}`)
+    }
+    console.log(commandResponse.message)
 }
 
 module.exports = {
