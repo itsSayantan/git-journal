@@ -14,7 +14,7 @@ git-notes requires you to have git installed on your local system. Also make sur
 
 The commands that are supported currently are:
 
-## v1.0.0
+### v1.0.0
 
 - create
 
