@@ -12,7 +12,7 @@ git-notes requires you to have git installed on your local system. Also make sur
 
 # Commands
 
-The commands that are supported currently are:
+The commands that are currently supported are:
 
 ### v1.0.0
 
