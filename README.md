@@ -16,12 +16,12 @@ The commands that are currently supported are:
 
 ### v1.0.0
 
-- create
+- create - create a new note.
 
-- get
+- get <note_id> - get a note with id: <note_id>.
 
-- getall
+- getall - get all notes.
 
-- help
+- help - lists help information.
 
-- exit
+- exit - exit the git-notes application.
