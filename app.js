@@ -8,7 +8,7 @@ const { welcome } = require('./flow/welcome')
 
 const { parseRawCommand, executeCommand, showCommandResponse, } = require('./utils')
 
-const dl = util.debuglog('git-notes')
+const dl = util.debuglog('git-journal')
 global.dl = dl
 
 // main function to initialize the application
@@ -58,7 +58,7 @@ const init = async () => {
         showAppCommandPrompt()
 
         rl.on("close", function() {
-            console.log("\nExiting git-notes. Mischief managed !!");
+            console.log("\nExiting git-journal. Mischief managed !!");
             process.exit();
         });
     } else {

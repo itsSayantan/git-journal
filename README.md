@@ -1,25 +1,25 @@
-# git-notes
+# git-journal
 
-Take notes with Git.
+Personal journal managed by Git.
 
 # Introduction
 
-git-notes is a tool for taking notes. It can be used as a journal. git-notes uses git for storing the notes.
+git-journal is a tool for taking journal entries. git-journal uses git for storing the journal entries.
 
 # Dependency
 
-git-notes requires you to have git installed on your local system. Also make sure that the ```git``` command is accessible.
+git-journal requires you to have git installed on your local system. Also make sure that the ```git``` command is accessible.
 
 # Commands
 
 The commands that are currently supported are:
 
-- create - create a new note.
+- create - create a new journal.
 
-- get <note_id> - get a note with id: <note_id>.
+- get <journal_id> - get a journal with id: <journal_id>.
 
-- getall - get all notes.
+- getall - get all journal entries.
 
 - help - lists help information.
 
-- exit - exit the git-notes application.
+- exit - exit the git-journal application.

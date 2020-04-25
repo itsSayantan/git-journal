@@ -12,70 +12,70 @@ const {
  */
 const executeCreate = (commandArgumentsList=[]) => {
     const {
-        performNoteCommit,
+        performJournalCommit,
     } = require('../')
     
     return new Promise((resolve, reject) => {
-        const showCreateNotePrompt = () => {
-            rl.question("Write a note: ", function(note) {
-                dl(`Note input: ${note}`)
+        const showCreateJournalPrompt = () => {
+            rl.question("Write a journal: ", function(journal) {
+                dl(`Journal input: ${journal}`)
 
-                // trim all leading and trailing white spaces from note
-                note = note.trim()
+                // trim all leading and trailing white spaces from journal
+                journal = journal.trim()
 
-                // check if the note is empty, if so, notify the user and reset the prompt
-                if (typeof note === 'string' && note.length === 0) {
-                    console.log(`Invalid note. Please enter a non-empty note and try again.`)
+                // check if the journal is empty, if so, notify the user and reset the prompt
+                if (typeof journal === 'string' && journal.length === 0) {
+                    console.log(`Invalid journal. Please enter a non-empty journal and try again.`)
 
-                    showCreateNotePrompt()
+                    showCreateJournalPrompt()
                 } else {
                     // this process might change in the future versions
-                    // check if the notes.json file exists
-                    dl(`Creating note...`)
-                    const notesFolderPath = path.join(__dirname, '/../../.data/git-notes-data')
-                    const notesFilePath = path.join(notesFolderPath, '/notes.json')
+                    // check if the journals.json file exists
+                    dl(`Creating journal...`)
+                    const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+                    const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
 
-                    dl(`Checking if notes.json is present...`)
-                    if (fs.existsSync(notesFilePath)) {
-                        dl(`notes.json was found`)
-                        // store the note in the git-notes-data data file(s)
+                    dl(`Checking if journals.json is present...`)
+                    if (fs.existsSync(journalsFilePath)) {
+                        dl(`journals.json was found`)
+                        // store the journal in the git-journals-data data file(s)
 
-                        dl(`Reading content of notes.json`)
-                        const notesFileContent = fs.readFileSync(notesFilePath, 'utf-8')
-                        dl(`notes.json content read`)
+                        dl(`Reading content of journals.json`)
+                        const journalsFileContent = fs.readFileSync(journalsFilePath, 'utf-8')
+                        dl(`journals.json content read`)
 
                         // check if the content is a valid json
 
                         try {
-                            // if notes file content is empty, consider string {}, else the notesFileContent
-                            let parsedJson = JSON.parse((notesFileContent.trim().length === 0) ? '{}' : notesFileContent)
+                            // if journals file content is empty, consider string {}, else the journalsFileContent
+                            let parsedJson = JSON.parse((journalsFileContent.trim().length === 0) ? '{}' : journalsFileContent)
 
-                            // insert the note into this parsed json
+                            // insert the journal into this parsed json
                             const currentTimestamp = Date.now()
-                            parsedJson[currentTimestamp.toString()] = note
+                            parsedJson[currentTimestamp.toString()] = journal
 
                             dl(`Content to be saved: ${JSON.stringify(parsedJson)}`)
 
-                            // save the latest content to the notes.json file
-                            fs.writeFileSync(notesFilePath, JSON.stringify(parsedJson, null, 4))
+                            // save the latest content to the journals.json file
+                            fs.writeFileSync(journalsFilePath, JSON.stringify(parsedJson, null, 4))
 
-                            // perform a git add and commit on the git-notes-data folder
-                            performNoteCommit(notesFolderPath, `1. Note ${currentTimestamp} created.`)
+                            // perform a git add and commit on the git-journals-data folder
+                            performJournalCommit(journalsFolderPath, `1. Journal ${currentTimestamp} created.`)
 
-                            resolve(`Note created on ${(new Date(currentTimestamp))}. Note ID: ${currentTimestamp}`)
+                            resolve(`Journal created on ${(new Date(currentTimestamp))}. Journal ID: ${currentTimestamp}`)
                         } catch(jsonParseError) {
                             reject(jsonParseError)
                         }
                     } else {
-                        dl(`notes.json was not found`)
-                        reject('notes.json file is not found.')
+                        dl(`journals.json was not found`)
+                        reject('journals.json file is not found.')
                     }
                 }
             });
         }
 
-        // call the showCreateNotePrompt method
-        showCreateNotePrompt()
+        // call the showCreateJournalPrompt method
+        showCreateJournalPrompt()
     })
 }
 
@@ -85,52 +85,52 @@ const executeCreate = (commandArgumentsList=[]) => {
  */
 const executeGetAll = (commandArgumentsList=[]) => {
     return new Promise((resolve, reject) => {
-        // check if the notes file exist        
-        const notesFolderPath = path.join(__dirname, '/../../.data/git-notes-data')
-        const notesFilePath = path.join(notesFolderPath, '/notes.json')
+        // check if the journals file exist        
+        const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+        const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
 
-        dl(`Checking if notes.json exist`)
-        if (fs.existsSync(notesFilePath)) {
-            dl(`notes.json was found`)
+        dl(`Checking if journals.json exist`)
+        if (fs.existsSync(journalsFilePath)) {
+            dl(`journals.json was found`)
 
             // read the data and return a string
 
-            dl(`Reading content of notes.json`)
-            const notesFileContent = fs.readFileSync(notesFilePath, 'utf-8')
-            dl(`notes.json content read`)
+            dl(`Reading content of journals.json`)
+            const journalsFileContent = fs.readFileSync(journalsFilePath, 'utf-8')
+            dl(`journals.json content read`)
 
-            if (notesFileContent.trim().length === 0) {
-                dl(`notes.json is empty`)
-                resolve(`No notes found. Start by creating a note with the 'create' command.`)
+            if (journalsFileContent.trim().length === 0) {
+                dl(`journals.json is empty`)
+                resolve(`No journals found. Start by creating a journal with the 'create' command.`)
             } else {
-                dl('notes.json is not empty')
+                dl('journals.json is not empty')
 
-                // check if the noteFileContent is a valid JSON
+                // check if the journalFileContent is a valid JSON
 
                 try {
-                    let parsedJson = JSON.parse(notesFileContent)
+                    let parsedJson = JSON.parse(journalsFileContent)
 
-                    // check if there are any notes in parsedJson
+                    // check if there are any journals in parsedJson
                     const keys = Object.keys(parsedJson)
                     const l = keys.length
 
                     if (l === 0) {
-                        resolve(`No notes found. Start by creating a note with the 'create' command.`)
+                        resolve(`No journals found. Start by creating a journal with the 'create' command.`)
                     }
 
                     /**
                      * else, return a string in the following format:
-                     * Note ID: note_id)
+                     * Journal ID: journal_id)
                      * [created on: <date_of_creation>]
-                     * <note_text>
+                     * <journal_text>
                      */
 
-                    let outputString = `\nList of all notes:\n==================\n\n`
+                    let outputString = `\nList of all journals:\n=====================\n\n`
 
                     for (let i = 0; i < l; ++i) {
                         const ki = keys[i]
 
-                        outputString += `note ID: ${ki}\n[created on: ${(new Date(Number(ki)))}]\n${parsedJson[ki]}\n\n`
+                        outputString += `Journal ID: ${ki}\n[created on: ${(new Date(Number(ki)))}]\n${parsedJson[ki]}\n\n`
                     }
 
                     resolve(outputString)
@@ -139,8 +139,8 @@ const executeGetAll = (commandArgumentsList=[]) => {
                 }
             }
         } else {
-            dl(`notes.json was not found`)
-            reject('notes.json file is not found.')
+            dl(`journals.json was not found`)
+            reject('journals.json file is not found.')
         }
     })
 }
@@ -151,76 +151,76 @@ const executeGetAll = (commandArgumentsList=[]) => {
  */
 const executeGet = (commandArgumentsList=[]) => {
     return new Promise((resolve, reject) => {
-        // check if the noteID was sent as a command line argument
+        // check if the journalID was sent as a command line argument
 
         if (commandArgumentsList instanceof Array && typeof commandArgumentsList[0] === 'string') {
-            const noteID = commandArgumentsList[0]
+            const journalID = commandArgumentsList[0]
 
-            // check if the notes file exist        
-            const notesFolderPath = path.join(__dirname, '/../../.data/git-notes-data')
-            const notesFilePath = path.join(notesFolderPath, '/notes.json')
+            // check if the journals file exist        
+            const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+            const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
 
-            dl(`Checking if notes.json exist`)
-            if (fs.existsSync(notesFilePath)) {
-                dl(`notes.json was found`)
+            dl(`Checking if journals.json exist`)
+            if (fs.existsSync(journalsFilePath)) {
+                dl(`journals.json was found`)
 
                 // read the data and return a string
 
-                dl(`Reading content of notes.json`)
-                const notesFileContent = fs.readFileSync(notesFilePath, 'utf-8')
-                dl(`notes.json content read`)
+                dl(`Reading content of journals.json`)
+                const journalsFileContent = fs.readFileSync(journalsFilePath, 'utf-8')
+                dl(`journals.json content read`)
 
-                if (notesFileContent.trim().length === 0) {
-                    dl(`notes.json is empty`)
-                    resolve(`No notes found. Start by creating a note with the 'create' command.`)
+                if (journalsFileContent.trim().length === 0) {
+                    dl(`journals.json is empty`)
+                    resolve(`No journals found. Start by creating a journal with the 'create' command.`)
                 } else {
-                    dl('notes.json is not empty')
+                    dl('journals.json is not empty')
 
-                    // check if the noteFileContent is a valid JSON
+                    // check if the journalFileContent is a valid JSON
 
                     try {
-                        let parsedJson = JSON.parse(notesFileContent)
+                        let parsedJson = JSON.parse(journalsFileContent)
 
-                        // check if there are any notes in parsedJson
+                        // check if there are any journals in parsedJson
                         const keys = Object.keys(parsedJson)
                         const l = keys.length
 
                         if (l === 0) {
-                            resolve(`No notes found. Start by creating a note with the 'create' command.`)
+                            resolve(`No journals found. Start by creating a journal with the 'create' command.`)
                         }
 
                         /**
-                         * else, find the note corresponding to
-                         * the note ID sent and then return a string
+                         * else, find the journal corresponding to
+                         * the journal ID sent and then return a string
                          * in the following format:
-                         * Note ID: note_id)
+                         * Journal ID: journal_id)
                          * [created on: <date_of_creation>]
-                         * <note_text>
+                         * <journal_text>
                          */
 
-                        const note = parsedJson[noteID]
+                        const journal = parsedJson[journalID]
 
-                        if (typeof note === 'string') {
-                            // note exists
+                        if (typeof journal === 'string') {
+                            // journal exists
                             let outputString = '\nResult:\n=======\n\n'
 
-                            outputString += `note ID: ${noteID}\n[created on: ${(new Date(Number(noteID)))}]\n${note}\n\n`
+                            outputString += `Journal ID: ${journalID}\n[created on: ${(new Date(Number(journalID)))}]\n${journal}\n\n`
                             resolve(outputString)
                         } else {
-                            // note does not exist
-                            resolve(`Note with ID: ${noteID} not found.`)
+                            // journal does not exist
+                            resolve(`Journal with ID: ${journalID} not found.`)
                         }
                     } catch(jsonParseError) {
                         reject(jsonParseError)
                     }
                 }
             } else {
-                dl(`notes.json was not found`)
-                reject('notes.json file is not found.')
+                dl(`journals.json was not found`)
+                reject('journals.json file is not found.')
             }
         } else {
             dl(`invalid argument(s) sent to the 'get' command`)
-            reject(`Improper note ID sent: ${commadArgumentsList[0]}.`)
+            reject(`Improper journal ID sent: ${commadArgumentsList[0]}.`)
         }
     })
 }
@@ -232,7 +232,7 @@ const executeGet = (commandArgumentsList=[]) => {
 const executeHelp = (commadArgumentsList=[]) => {
     return new Promise((resolve) => {
         // clear the screen if not in debug mode
-        if (process.env.NODE_DEBUG !== 'git-notes') {
+        if (process.env.NODE_DEBUG !== 'git-journal') {
             console.clear()
         }
 

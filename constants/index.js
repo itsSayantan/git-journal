@@ -11,7 +11,7 @@ const commandsList = {
     },
     get: {
         commandArgumentsList: {
-            noteID: 'ID of the note being searched.'
+            journalID: 'ID of the journal being searched.'
         }
     },
     getall: {

@@ -33,7 +33,7 @@ const initializeGitRepository = (folderPath) => {
  * @param {boolean} dontCreateIfExists if, true, the data files wont be created if they are already present
  */
 const createDataFiles = (folderPath, dontCreateIfExists = false) => {
-    const dataFilesList = ['notes.json']
+    const dataFilesList = ['journals.json']
 
     const l = dataFilesList.length
 
@@ -136,11 +136,11 @@ const showCommandResponse = (commandResponse) => {
 
 /**
  * 
- * @param {string} notesFolderPath path to the folder containing notes.json
+ * @param {string} journalsFolderPath path to the folder containing journals.json
  * @param {string} commitMessage message to be used while commiting
  */
-const performNoteCommit = (notesFolderPath, commitMessage) => {
-    cp.execSync(`cd ${notesFolderPath} && git add . && git commit -m "${commitMessage}"`)
+const performJournalCommit = (journalsFolderPath, commitMessage) => {
+    cp.execSync(`cd ${journalsFolderPath} && git add . && git commit -m "${commitMessage}"`)
 }
 
 module.exports = {
@@ -150,5 +150,5 @@ module.exports = {
     parseRawCommand,
     executeCommand,
     showCommandResponse,
-    performNoteCommit,
+    performJournalCommit,
 }

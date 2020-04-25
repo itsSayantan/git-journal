@@ -18,26 +18,26 @@ const appOpen = () => {
             // check if the .data folder exists, if no, create it
     
             const dataFolderPath = path.join(__dirname + '/../.data')
-            const gitNotesFolderPath = path.join(dataFolderPath + '/git-notes-data')
+            const gitJournalFolderPath = path.join(dataFolderPath + '/git-journals-data')
     
             if (fs.existsSync(dataFolderPath)) {
                 dl('.data folder exists')
     
-                // check if the git-notes-data folder exists inside the .data folder, if not create it.
+                // check if the git-journals-data folder exists inside the .data folder, if not create it.
     
-                if (fs.existsSync(gitNotesFolderPath)) {
-                    dl('git-notes-data folder was found in the .data folder')
+                if (fs.existsSync(gitJournalFolderPath)) {
+                    dl('git-journals-data folder was found in the .data folder')
                 } else {
-                    // create the git-notes-data folder inside the .data folder and initialize a git repository inside.
-                    // this folder will be the place where all the notes will be stored.
+                    // create the git-journals-data folder inside the .data folder and initialize a git repository inside.
+                    // this folder will be the place where all the journal entries will be stored.
     
-                    dl('Creating git-notes-data folder inside the .data folder...')
-                    fs.mkdirSync(gitNotesFolderPath)
-                    dl('git-notes-data folder created.')
+                    dl('Creating git-journals-data folder inside the .data folder...')
+                    fs.mkdirSync(gitJournalFolderPath)
+                    dl('git-journals-data folder created.')
                 }
     
-                // check if there is a git repository initialized inside the git-notes-data folder
-                cp.exec(`cd ${gitNotesFolderPath} && git rev-parse --is-inside-work-tree`, (errorFromCheckingIfGitIsInitialized, dataFromCheckingIfGitIsInitialized) => {
+                // check if there is a git repository initialized inside the git-journals-data folder
+                cp.exec(`cd ${gitJournalFolderPath} && git rev-parse --is-inside-work-tree`, (errorFromCheckingIfGitIsInitialized, dataFromCheckingIfGitIsInitialized) => {
                     if (errorFromCheckingIfGitIsInitialized) {
                         dl(errorFromCheckingIfGitIsInitialized)
     
@@ -46,28 +46,28 @@ const appOpen = () => {
                     } else {
                         const isGitRepository = dataFromCheckingIfGitIsInitialized.trim()
                         
-                        // if isGitRepository is false, then initialize a git repository inside the git-notes-data folder.
-                        // put an additional check to see if git-notes-data folder has a .git folder.
+                        // if isGitRepository is false, then initialize a git repository inside the git-journals-data folder.
+                        // put an additional check to see if git-journals-data folder has a .git folder.
     
-                        if (isGitRepository && fs.existsSync(path.join(gitNotesFolderPath + '/.git'))) {
-                            dl('git-notes-data is a valid git repository')
+                        if (isGitRepository && fs.existsSync(path.join(gitJournalFolderPath + '/.git'))) {
+                            dl('git-journals-data is a valid git repository')
                         } else {
-                            dl('git-notes-data is not a valid git repository, initializing git repository...')
+                            dl('git-journals-data is not a valid git repository, initializing git repository...')
     
-                            // delete everything from the git-notes-data folder
-                            deleteEverythingFromFolder(gitNotesFolderPath)
+                            // delete everything from the git-journals-data folder
+                            deleteEverythingFromFolder(gitJournalFolderPath)
     
-                            // initalize git repository inside the git-notes-data folder
-                            initializeGitRepository(gitNotesFolderPath)
+                            // initalize git repository inside the git-journals-data folder
+                            initializeGitRepository(gitJournalFolderPath)
                         }
     
-                        // at this point, .data/git-notes-data should exist and git-notes-data should be a valid git repository.
+                        // at this point, .data/git-journals-data should exist and git-journals-data should be a valid git repository.
     
-                        // check if all the data files are present inside the git-notes-data folder,
+                        // check if all the data files are present inside the git-journals-data folder,
                         // if no, create all the necessary files.
-                        dl('Checking if data files are present inside the git-notes-data folder. Will create only if they are not present')
-                        createDataFiles(gitNotesFolderPath, true)
-                        dl('Checked if data files are present inside the git-notes-data folder. Necesasary actions taken')
+                        dl('Checking if data files are present inside the git-journals-data folder. Will create only if they are not present')
+                        createDataFiles(gitJournalFolderPath, true)
+                        dl('Checked if data files are present inside the git-journals-data folder. Necesasary actions taken')
                     }
 
                     // finally, resolve the promise
@@ -78,21 +78,21 @@ const appOpen = () => {
                 fs.mkdirSync(dataFolderPath)
                 dl('.data folder created.')
                 
-                // create the git-notes-data folder inside the .data folder and initialize a git repository inside.
-                // this folder will be the place where all the notes will be stored.
+                // create the git-journals-data folder inside the .data folder and initialize a git repository inside.
+                // this folder will be the place where all the journal entries will be stored.
     
-                dl('Creating git-notes-data folder inside the .data folder...')
-                fs.mkdirSync(gitNotesFolderPath)
-                dl('Created git-notes-data folder inside the .data folder')
+                dl('Creating git-journals-data folder inside the .data folder...')
+                fs.mkdirSync(gitJournalFolderPath)
+                dl('Created git-journals-data folder inside the .data folder')
     
-                // initialize git-notes-data as a git repository
-                dl('Initializing git-notes-data as a git repository')
-                initializeGitRepository(gitNotesFolderPath)
-                dl('Initialized git-notes-data as a git repository')
+                // initialize git-journals-data as a git repository
+                dl('Initializing git-journals-data as a git repository')
+                initializeGitRepository(gitJournalFolderPath)
+                dl('Initialized git-journals-data as a git repository')
     
-                // create all the data files inside the git-notes-data folder.
+                // create all the data files inside the git-journals-data folder.
                 dl('Creating the data files')
-                createDataFiles(gitNotesFolderPath, false)
+                createDataFiles(gitJournalFolderPath, false)
                 dl('Created the data files')
 
                 // finally, resolve the promise

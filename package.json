@@ -1,27 +1,27 @@
 {
-  "name": "git-notes",
+  "name": "git-journal",
   "version": "1.0.0",
-  "description": "Take notes with Git",
+  "description": "Personal journal managed by Git.",
   "main": "app.js",
   "bin": {
-    "git-notes": "app.js"
+    "git-journal": "app.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itsSayantan/git-notes.git"
+    "url": "git+https://github.com/itsSayantan/git-journal.git"
   },
   "keywords": [
-    "notes",
+    "journal",
     "git",
-    "git-notes"
+    "git-journal"
   ],
   "author": "Sayantan Ghosh <sayantan.ghosh03@gmail.com> (https://sayantan-ghosh.herokuapp.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/itsSayantan/git-notes/issues"
+    "url": "https://github.com/itsSayantan/git-journal/issues"
   },
-  "homepage": "https://github.com/itsSayantan/git-notes#readme"
+  "homepage": "https://github.com/itsSayantan/git-journal#readme"
 }
