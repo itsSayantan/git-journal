@@ -3,7 +3,7 @@ const path = require('path')
 const cp = require('child_process')
 
 const {
-    commandArgumentsList, commandsList,
+    commandsList,
 } = require('../../constants')
 
 /**
@@ -11,6 +11,10 @@ const {
  * @param {Array<string>} commandArgumentsList list of arguments for the 'create' command 
  */
 const executeCreate = (commandArgumentsList=[]) => {
+    const {
+        performNoteCommit,
+    } = require('../')
+    
     return new Promise((resolve, reject) => {
         const showCreateNotePrompt = () => {
             rl.question("Write a note: ", function(note) {
@@ -56,7 +60,7 @@ const executeCreate = (commandArgumentsList=[]) => {
                             fs.writeFileSync(notesFilePath, JSON.stringify(parsedJson, null, 4))
 
                             // perform a git add and commit on the git-notes-data folder
-                            cp.execSync(`cd ${notesFolderPath} && git add . && git commit -m "1. Note ${currentTimestamp} created."`)
+                            performNoteCommit(notesFolderPath, `1. Note ${currentTimestamp} created.`)
 
                             resolve(`Note created on ${(new Date(currentTimestamp))}. Note ID: ${currentTimestamp}`)
                         } catch(jsonParseError) {

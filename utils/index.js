@@ -134,6 +134,15 @@ const showCommandResponse = (commandResponse) => {
     console.log(commandResponse.message)
 }
 
+/**
+ * 
+ * @param {string} notesFolderPath path to the folder containing notes.json
+ * @param {string} commitMessage message to be used while commiting
+ */
+const performNoteCommit = (notesFolderPath, commitMessage) => {
+    cp.execSync(`cd ${notesFolderPath} && git add . && git commit -m "${commitMessage}"`)
+}
+
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
@@ -141,4 +150,5 @@ module.exports = {
     parseRawCommand,
     executeCommand,
     showCommandResponse,
+    performNoteCommit,
 }
