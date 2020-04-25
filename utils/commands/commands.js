@@ -239,7 +239,7 @@ const executeHelp = (commadArgumentsList=[]) => {
         /**
          * read the commandsList constant and return a string in the following format:
          * - <command_name>
-         *      + <argument> - <description_of_the_argment>
+         *      + <argument> - <description_of_the_argument>
          */
 
         let outputString = '\nList of all commands:\n=====================\n'
