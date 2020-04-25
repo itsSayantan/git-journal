@@ -14,8 +14,6 @@ git-notes requires you to have git installed on your local system. Also make sur
 
 The commands that are currently supported are:
 
-### v1.0.0
-
 - create - create a new note.
 
 - get <note_id> - get a note with id: <note_id>.
