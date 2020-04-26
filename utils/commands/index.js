@@ -6,6 +6,7 @@ const {
     executeExit,
     executeDeleteAll,
     executeDelete,
+    executeResetApp,
 } = require('./commands')
 
 const commandMap = {
@@ -29,7 +30,10 @@ const commandMap = {
     },
     exit: {
         execute: executeExit
-    }
+    },
+    resetapp: {
+        execute: executeResetApp
+    },
 }
 
 module.exports = {

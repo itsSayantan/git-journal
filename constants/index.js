@@ -17,6 +17,9 @@ const commandsList = {
     deleteall: {
         commandArgumentsList: {}
     },
+    'exit': {
+        commandArgumentsList: {}
+    },
     get: {
         commandArgumentsList: {
             journalID: 'ID of the journal being searched.'
@@ -28,9 +31,9 @@ const commandsList = {
     help: {
         commandArgumentsList: {}
     },
-    'exit': {
+    resetapp: {
         commandArgumentsList: {}
-    }
+    },
 }
 
 module.exports = {

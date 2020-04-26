@@ -42,11 +42,12 @@ const init = async () => {
 
                     dl(`executeCommand successful with response: ${JSON.stringify(commandResponse)}`)
                     
-                    if (commandResponse.status === true) {
+                    // show command response only when status is true, message exists and is a string and has a length > 0
+                    if (commandResponse.status === true && typeof commandResponse.message === 'string' && commandResponse.message.trim().length > 0) {
                         showCommandResponse(commandResponse)
                     }
                 } catch(errorFromExecuteCommand) {
-                    dl(`executeCommand error: ${JSON.stringify(errorFromExecuteCommand)} `)
+                    dl(`executeCommand error: ${JSON.stringify(errorFromExecuteCommand)}`)
                     showCommandResponse(errorFromExecuteCommand)
                 }
 

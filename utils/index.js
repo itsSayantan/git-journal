@@ -143,6 +143,28 @@ const performJournalCommit = (journalsFolderPath, commitMessage) => {
     cp.execSync(`cd ${journalsFolderPath} && git add . && git commit -m "${commitMessage}"`)
 }
 
+/**
+ * 
+ * @param {string} confirmationPromptText message to show in the confirmation prompt
+ * @param {Array<string>} validOptions array of strings that are valid options (should not have leading or trailing spaces)
+ */
+const userConfirmationPrompt = (confirmationPromptText, validOptions) => {
+    return new Promise(resolve => {
+        rl.question(confirmationPromptText, data => {
+            // considering all the strings in validOptions array will not have leading or trailing spaces
+            const enteredOption = data.trim()
+            dl(`Entered Option: ${enteredOption}`)
+    
+            if (validOptions.indexOf(enteredOption) !== -1) {
+                resolve(enteredOption)
+            } else {
+                console.log(`Invalid Option: ${enteredOption}. Please try again.`)
+                userConfirmationPrompt(confirmationPromptText, validOptions)
+            }
+        })
+    })
+}
+
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
@@ -151,4 +173,5 @@ module.exports = {
     executeCommand,
     showCommandResponse,
     performJournalCommit,
+    userConfirmationPrompt,
 }
