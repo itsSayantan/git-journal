@@ -9,6 +9,14 @@ const commandsList = {
     'create': {
         commandArgumentsList: {}
     },
+    delete: {
+        commandArgumentsList: {
+            journalID: 'ID of the journal being deleted.'
+        }
+    },
+    deleteall: {
+        commandArgumentsList: {}
+    },
     get: {
         commandArgumentsList: {
             journalID: 'ID of the journal being searched.'
