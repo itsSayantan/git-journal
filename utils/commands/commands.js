@@ -280,10 +280,127 @@ const executeExit = (commandArgumentsList=[]) => {
     rl.close()
 }
 
+/**
+ * 
+ * @param {Array<string>} commandArgumentsList list of arguments for the 'deleteall' command 
+ */
+const executeDeleteAll = (commandArgumentsList=[]) => {
+    const {
+        performJournalCommit,
+    } = require('../')
+
+    return new Promise((resolve, reject) => {
+        // check if the journals file exist        
+        const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+        const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
+
+        dl(`Checking if journals.json exist`)
+        if (fs.existsSync(journalsFilePath)) {
+            dl(`journals.json was found`)
+
+            // remove all content from journals.json
+
+            dl('Deleting everything from journals.json')
+            fs.writeFileSync(journalsFilePath, '')
+            dl('Deleted all content from journals.json')
+
+            // commit the changes
+            performJournalCommit(journalsFolderPath, `1. All journals deleted.`)
+
+            resolve(`All journals deleted.`)
+        } else {
+            dl(`journals.json was not found`)
+            reject('journals.json file is not found.')
+        }
+    })
+}
+
+/**
+ * 
+ * @param {Array<string>} commandArgumentsList list of arguments for the 'delete' command 
+ */
+const executeDelete = (commandArgumentsList=[]) => {
+    const {
+        performJournalCommit,
+    } = require('../')
+
+    return new Promise((resolve, reject) => {
+        // check if the journalID was sent as a command line argument
+
+        if (commandArgumentsList instanceof Array && typeof commandArgumentsList[0] === 'string') {
+            const journalID = commandArgumentsList[0]
+
+            // check if the journals file exist        
+            const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+            const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
+
+            dl(`Checking if journals.json exist`)
+            if (fs.existsSync(journalsFilePath)) {
+                dl(`journals.json was found`)
+
+                // read the data and return a string
+
+                dl(`Reading content of journals.json`)
+                const journalsFileContent = fs.readFileSync(journalsFilePath, 'utf-8')
+                dl(`journals.json content read`)
+
+                if (journalsFileContent.trim().length === 0) {
+                    dl(`journals.json is empty`)
+                    resolve(`No journals found. Start by creating a journal with the 'create' command.`)
+                } else {
+                    dl('journals.json is not empty')
+
+                    // check if the journalFileContent is a valid JSON
+
+                    try {
+                        let parsedJson = JSON.parse(journalsFileContent)
+
+                        // check if a journal with id: journal id exists
+                        dl(`Searching for journal with id: ${journalID}`)
+                        const journal = parsedJson[journalID]
+
+                        if (journal) {
+                            dl(`Journal with id: ${journalID} found`)
+                            // delete the journal with the key journal ID
+
+                            delete parsedJson[journalID]
+
+                            // write the new content of parsedJSON to the journals.json file
+                            dl(`New content of parsedJSON: ${JSON.stringify(parsedJson)}`)
+                            
+                            fs.writeFileSync(journalsFilePath, JSON.stringify(parsedJson))
+
+                            dl(`New content of parsedJson written to journals.json`)
+
+                            // commit the changes
+                            performJournalCommit(journalsFolderPath, `1. Jounral with ID: ${journalID} deleted.`)
+
+                            resolve(`Jounal with ID: ${journalID} deleted.`)
+                        } else {
+                            dl(`Journal with id: ${journalID} could not be found`)
+                            resolve(`Journal with ID: ${journalID} could not be found and hence could not be deleted.`)
+                        }
+                    } catch(jsonParseError) {
+                        reject(jsonParseError)
+                    }
+                }
+            } else {
+                dl(`journals.json was not found`)
+                reject('journals.json file is not found.')
+            }
+        } else {
+            dl(`invalid argument(s) sent to the 'get' command`)
+            reject(`Improper journal ID sent: ${commadArgumentsList[0]}.`)
+        }
+    })
+}
+
 module.exports = {
     executeCreate,
     executeGetAll,
     executeGet,
     executeHelp,
     executeExit,
+    executeDeleteAll,
+    executeDelete,
 }

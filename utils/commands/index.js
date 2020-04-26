@@ -4,11 +4,19 @@ const {
     executeGetAll,
     executeHelp,
     executeExit,
+    executeDeleteAll,
+    executeDelete,
 } = require('./commands')
 
 const commandMap = {
     create: {
         execute: executeCreate
+    },
+    delete: {
+        execute: executeDelete
+    },
+    deleteall: {
+        execute: executeDeleteAll
     },
     get: {
         execute: executeGet

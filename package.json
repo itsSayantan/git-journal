@@ -1,6 +1,6 @@
 {
   "name": "git-journal",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Personal journal managed by Git.",
   "main": "app.js",
   "bin": {

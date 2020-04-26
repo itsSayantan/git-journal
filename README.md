@@ -16,6 +16,10 @@ The commands that are currently supported are:
 
 - create - create a new journal.
 
+- delete <journal_id> - delete a journal with id: <journal_id>.
+
+- deleteall - delete all journal entries.
+
 - get <journal_id> - get a journal with id: <journal_id>.
 
 - getall - get all journal entries.
