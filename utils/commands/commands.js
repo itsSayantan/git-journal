@@ -395,6 +395,44 @@ const executeDelete = (commandArgumentsList=[]) => {
     })
 }
 
+/**
+ * 
+ * @param {Array<string>} commandArgumentsList list of arguments for the 'resetapp' command  
+ */
+const executeResetApp = (commandArgumentsList=[]) => {
+    const {
+        userConfirmationPrompt,
+    } = require('../')
+
+    return new Promise(async (resolve) => {
+        // show user confirmation prompt
+        const userConfirmationResponse = (await userConfirmationPrompt('Are you sure? This operation cannot be reverted. Enter [y/n]: ', ['Y', 'y', 'N', 'n'])).toLowerCase()
+
+        if (userConfirmationResponse === 'y') {
+            // delete the .data folder
+            const dataFolderPath = path.join(__dirname, '/../../.data/')
+
+            let deleteCommand = `rm -rf ${dataFolderPath}`
+
+            // change the command if the platform is windows
+            if (require('os').platform() === 'win32') {
+                deleteCommand = `rmdir ${dataFolderPath} /s /q`
+            }
+            
+            dl(`Deleting .data folder at: ${dataFolderPath}`)
+            cp.execSync(deleteCommand)
+            dl(`.data folder deleted`)
+
+            // exit app
+            console.log(`git-journal was reset successfully. Please restart the app.`)
+
+            process.exit()
+        } else {
+            resolve('')
+        }
+    })
+}
+
 module.exports = {
     executeCreate,
     executeGetAll,
@@ -403,4 +441,5 @@ module.exports = {
     executeExit,
     executeDeleteAll,
     executeDelete,
+    executeResetApp,
 }

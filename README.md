@@ -18,6 +18,8 @@ The commands that are currently supported are:
 
 - delete <journal_id> - delete a journal with id: <journal_id>.
 
+- exit - exit the git-journal application.
+
 - deleteall - delete all journal entries.
 
 - get <journal_id> - get a journal with id: <journal_id>.
@@ -26,4 +28,4 @@ The commands that are currently supported are:
 
 - help - lists help information.
 
-- exit - exit the git-journal application.
+- resetapp - deletes the data folder containing all the journals and resets the application to its default. (Needs restart)
