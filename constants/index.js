@@ -1,7 +1,7 @@
 /**
- * commandList is an object where 
- * key is the mainCommand and 
- * commandArgumentsList is an object with key as command option and value = <description_of_the_argument>
+ * commandList is an object where key is the mainCommand and value is an object (commandObject)
+ * commandObject is an object where key is commandArgumentsList.
+ * the corresponding value of commandArgumentsList key is: <description_of_the_argument>
  *
  */
 
