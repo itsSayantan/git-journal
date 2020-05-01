@@ -6,6 +6,11 @@
  */
 
 const commandsList = {
+    'backup': {
+        commandArgumentsList: {
+            gitRemoteUrl: 'Remote URL of the Git repository where the jounals need to be pushed.'
+        }
+    },
     'create': {
         commandArgumentsList: {}
     },
@@ -33,6 +38,11 @@ const commandsList = {
     },
     resetapp: {
         commandArgumentsList: {}
+    },
+    'restore': {
+        commandArgumentsList: {
+            gitRemoteUrl: 'Remote URL of the Git repository from where the jounals are to be pulled.'
+        }
     },
 }
 
