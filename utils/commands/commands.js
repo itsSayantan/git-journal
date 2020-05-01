@@ -389,7 +389,7 @@ const executeDelete = (commandArgumentsList=[]) => {
                 reject('journals.json file is not found.')
             }
         } else {
-            dl(`invalid argument(s) sent to the 'get' command`)
+            dl(`invalid argument(s) sent to the 'delete' command`)
             reject(`Improper journal ID sent: ${commadArgumentsList[0]}.`)
         }
     })
@@ -433,6 +433,131 @@ const executeResetApp = (commandArgumentsList=[]) => {
     })
 }
 
+/**
+ * 
+ * @param {Array<string>} commandArgumentsList list of arguments for the 'backup' command 
+ */
+const executeBackup = (commandArgumentsList=[]) => {
+    const {
+        gitRemoteRemoveOrigin,
+        performJournalCommit,
+        gitRemoteAddOrigin,
+        gitPull,
+        gitPush,
+    } = require('../')
+
+    return new Promise((resolve, reject) => {
+        // check if the journalID was sent as a command line argument
+
+        if (commandArgumentsList instanceof Array && typeof commandArgumentsList[0] === 'string') {
+            const gitRemoteUrl = commandArgumentsList[0]
+
+            // check if the journals file exist        
+            const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+            const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
+
+            dl(`Checking if journals.json exist`)
+            if (fs.existsSync(journalsFilePath)) {
+                dl(`journals.json was found`)
+
+                try {
+                    dl(`Removing remote origin`)
+                    gitRemoteRemoveOrigin(journalsFolderPath)
+                    dl(`Remote origin removed`)
+
+                    dl(`Doing git commit`)
+                    performJournalCommit(journalsFolderPath, `1. Journal backup: ${Date.now()}`, true)
+                    dl(`Done git commit`)
+
+                    dl(`Adding remote origin: ${gitRemoteUrl}`)
+                    gitRemoteAddOrigin(journalsFolderPath, gitRemoteUrl)
+                    dl(`Remote origin added`)
+
+                    dl(`Pulling from remote repository`)
+                    gitPull(journalsFolderPath)
+                    dl(`Pulled from remote repository`)
+
+                    dl(`Pushing to remote repository`)
+                    gitPush(journalsFolderPath)
+                    dl(`Pushed to remote repository`)
+
+                    resolve(`All journals backed up successfully.`)
+                } catch(error) {
+                    reject(error)
+                }
+            } else {
+                dl(`journals.json was not found`)
+                reject('journals.json file is not found.')
+            }
+        } else {
+            dl(`invalid argument(s) sent to the 'backup' command`)
+            reject(`Improper git remote url sent: ${commadArgumentsList[0]}.`)
+        }
+    })
+}
+
+/**
+ * 
+ * @param {Array<string>} commandArgumentsList list of arguments for the 'restore' command 
+ */
+const executeRestore = (commandArgumentsList=[]) => {
+    const {
+        gitRemoteRemoveOrigin,
+        gitRemoteAddOrigin,
+        gitPull,
+        gitStash,
+    } = require('../')
+
+    return new Promise((resolve, reject) => {
+        // check if the journalID was sent as a command line argument
+
+        if (commandArgumentsList instanceof Array && typeof commandArgumentsList[0] === 'string') {
+            const gitRemoteUrl = commandArgumentsList[0]
+
+            // check if the journals file exist        
+            const journalsFolderPath = path.join(__dirname, '/../../.data/git-journals-data')
+            const journalsFilePath = path.join(journalsFolderPath, '/journals.json')
+
+            dl(`Checking if journals.json exist`)
+            if (fs.existsSync(journalsFilePath)) {
+                dl(`journals.json was found`)
+
+                try {
+                    dl(`Doing git stash`)
+                    gitStash(journalsFolderPath, false)
+                    dl(`Done git stash`)
+
+                    dl(`Removing remote origin`)
+                    gitRemoteRemoveOrigin(journalsFolderPath)
+                    dl(`Remote origin removed`)
+
+                    dl(`Adding remote origin: ${gitRemoteUrl}`)
+                    gitRemoteAddOrigin(journalsFolderPath, gitRemoteUrl)
+                    dl(`Remote origin added`)
+
+                    dl(`Pulling from remote repository`)
+                    gitPull(journalsFolderPath)
+                    dl(`Pulled from remote repository`)
+
+                    dl(`Doing git stash pop`)
+                    gitStash(journalsFolderPath, true)
+                    dl(`Done git stash pop`)
+
+                    resolve(`All journals restored successfully.`)
+                } catch(error) {
+                    reject(error)
+                }
+            } else {
+                dl(`journals.json was not found`)
+                reject('journals.json file is not found.')
+            }
+        } else {
+            dl(`invalid argument(s) sent to the 'restore' command`)
+            reject(`Improper git remote url sent: ${commadArgumentsList[0]}.`)
+        }
+    })
+}
+
 module.exports = {
     executeCreate,
     executeGetAll,
@@ -442,4 +567,6 @@ module.exports = {
     executeDeleteAll,
     executeDelete,
     executeResetApp,
+    executeBackup,
+    executeRestore,
 }

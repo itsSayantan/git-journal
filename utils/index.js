@@ -47,6 +47,9 @@ const createDataFiles = (folderPath, dontCreateIfExists = false) => {
         
         fs.writeFileSync(folderPath + '/' + dataFile, '')
     }
+
+    // create an initial commit
+    performJournalCommit(folderPath, `1. git-journal initialized: ${Date.now()}`, true)
 }
 
 /**
@@ -138,9 +141,11 @@ const showCommandResponse = (commandResponse) => {
  * 
  * @param {string} journalsFolderPath path to the folder containing journals.json
  * @param {string} commitMessage message to be used while commiting
+ * @param {boolean} allowEmpty if true, empty commit with be allowed
  */
-const performJournalCommit = (journalsFolderPath, commitMessage) => {
-    cp.execSync(`cd ${journalsFolderPath} && git add . && git commit -m "${commitMessage}"`)
+const performJournalCommit = (journalsFolderPath, commitMessage, allowEmpty=false) => {
+    const allowEmptyString = allowEmpty ? '--allow-empty' : ''
+    cp.execSync(`cd ${journalsFolderPath} && git add . && git commit ${allowEmptyString} -m "${commitMessage}"`)
 }
 
 /**
@@ -165,6 +170,67 @@ const userConfirmationPrompt = (confirmationPromptText, validOptions) => {
     })
 }
 
+/**
+ * 
+ * @param {string} journalsFolderPath path to the folder containing journals.json
+ */
+const gitRemoteRemoveOrigin = (journalsFolderPath) => {
+    const removeOriginCommand = `cd ${journalsFolderPath} && git remote rm origin`
+    
+    try {
+        cp.execSync(removeOriginCommand)
+    } catch(error) {
+        dl(`Error from git remote rm command: ${JSON.stringify(error)}`)
+    }
+}
+
+/**
+ * 
+ * @param {string} journalsFolderPath path to the folder containing journals.json
+ * @param {string} gitRemoteUrl remote url of the git repository where the jounals need to be pushed
+ */
+const gitRemoteAddOrigin = (journalsFolderPath, gitRemoteUrl) => {
+    const addOriginCommand = `cd ${journalsFolderPath} && git remote add origin ${gitRemoteUrl}`
+    
+    cp.execSync(addOriginCommand)
+}
+
+/**
+ * 
+ * @param {string} journalsFolderPath path to the folder containing journals.json
+ */
+const gitPull = (journalsFolderPath) => {
+    const pullCommand = `cd ${journalsFolderPath} && git pull origin master --allow-unrelated-histories`
+
+    cp.execSync(pullCommand)
+}
+
+/**
+ * 
+ * @param {string} journalsFolderPath path to the folder containing journals.json
+ */
+const gitPush = (journalsFolderPath) => {
+    const pushCommand = `cd ${journalsFolderPath} && git push origin master`
+
+    cp.execSync(pushCommand)
+}
+
+/**
+ * 
+ * @param {string} journalsFolderPath path to the folder containing journals.json
+ * @param {boolean} pop if true, git stash pop will be done
+ */
+const gitStash = (journalsFolderPath, pop=false) => {
+    const popText = pop ? 'pop' : ''
+    const gitStashCommand = `cd ${journalsFolderPath} && git stash ${popText}`
+
+    try {
+        cp.execSync(gitStashCommand)
+    } catch(error) {
+        dl(`Error from git stash ${popText} command: ${error}`)
+    }
+}
+
 module.exports = {
     deleteEverythingFromFolder,
     initializeGitRepository,
@@ -174,4 +240,9 @@ module.exports = {
     showCommandResponse,
     performJournalCommit,
     userConfirmationPrompt,
+    gitRemoteRemoveOrigin,
+    gitRemoteAddOrigin,
+    gitPull,
+    gitPush,
+    gitStash,
 }

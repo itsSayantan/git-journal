@@ -1,4 +1,5 @@
 const {
+    executeBackup,
     executeCreate,
     executeGet,
     executeGetAll,
@@ -7,9 +8,13 @@ const {
     executeDeleteAll,
     executeDelete,
     executeResetApp,
+    executeRestore,
 } = require('./commands')
 
 const commandMap = {
+    backup: {
+        execute: executeBackup
+    },
     create: {
         execute: executeCreate
     },
@@ -34,6 +39,9 @@ const commandMap = {
     resetapp: {
         execute: executeResetApp
     },
+    restore: {
+        execute: executeRestore
+    }
 }
 
 module.exports = {
