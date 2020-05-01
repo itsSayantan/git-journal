@@ -18,9 +18,9 @@ The commands that are currently supported are:
 
 - delete <journal_id> - delete a journal with id: <journal_id>.
 
-- exit - exit the git-journal application.
-
 - deleteall - delete all journal entries.
+
+- exit - exit the git-journal application.
 
 - get <journal_id> - get a journal with id: <journal_id>.
 
