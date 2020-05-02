@@ -202,7 +202,14 @@ const gitRemoteAddOrigin = (journalsFolderPath, gitRemoteUrl) => {
 const gitPull = (journalsFolderPath) => {
     const pullCommand = `cd ${journalsFolderPath} && git pull origin master --allow-unrelated-histories`
 
+    // release the readline 'rl' being used by git-jounral so that user can enter the user id and password if a prompt is shown by git
+    rl.pause()
+    process.stdin.setRawMode(false)
+    
     cp.execSync(pullCommand)
+    
+    // resume the released readline 'rl'
+    rl.resume()
 }
 
 /**
@@ -212,7 +219,14 @@ const gitPull = (journalsFolderPath) => {
 const gitPush = (journalsFolderPath) => {
     const pushCommand = `cd ${journalsFolderPath} && git push origin master`
 
+    // release the readline 'rl' being used by git-jounral so that user can enter the user id and password if a prompt is shown by git
+    rl.pause()
+    process.stdin.setRawMode(false)
+
     cp.execSync(pushCommand)
+    
+    // resume the released readline 'rl'
+    rl.resume()
 }
 
 /**
