@@ -12,7 +12,7 @@ const projectInformation = `\nVersion: ${projectVersion}\n\nProject URL: https:/
 
 const authorInformation = `\nAuthor: Sayantan Ghosh\nWebiste: https://sayantan-ghosh.herokuapp.com\nGithub Profile: https://github.com/itsSayantan`
 
-const helpInformation = `\nEnter command: 'help' to get the list of commands or enter 'exit' to exit the application.`
+const helpInformation = `\nEnter command: 'help' to get the list of commands or enter 'exit' to exit the application.\n\nNote:\n\nPlease restore all your journals in case you updated the repository where you have backed up your journals or you are about to use a remote repository which has its own set of commits that might cause a conflict here. If you change your local journals repository before restoring the journals from your remote repository, you might face conflicts while making a backup, which can only be resolved by you.`
 
 const welcome = () => {
     // show the welcome message, only if the application is not being run in the debug mode
