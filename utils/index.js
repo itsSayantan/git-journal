@@ -164,7 +164,7 @@ const userConfirmationPrompt = (confirmationPromptText, validOptions) => {
                 resolve(enteredOption)
             } else {
                 console.log(`Invalid Option: ${enteredOption}. Please try again.`)
-                userConfirmationPrompt(confirmationPromptText, validOptions)
+                resolve(userConfirmationPrompt(confirmationPromptText, validOptions))
             }
         })
     })
@@ -210,6 +210,7 @@ const gitPull = (journalsFolderPath) => {
     
     // resume the released readline 'rl'
     rl.resume()
+    process.stdin.setRawMode(true)
 }
 
 /**
@@ -227,6 +228,7 @@ const gitPush = (journalsFolderPath) => {
     
     // resume the released readline 'rl'
     rl.resume()
+    process.stdin.setRawMode(true)
 }
 
 /**
