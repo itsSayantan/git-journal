@@ -1,6 +1,6 @@
 {
   "name": "git-journal",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Personal journal managed by Git.",
   "main": "app.js",
   "bin": {
@@ -23,5 +23,6 @@
   "bugs": {
     "url": "https://github.com/itsSayantan/git-journal/issues"
   },
-  "homepage": "https://github.com/itsSayantan/git-journal#readme"
+  "homepage": "https://github.com/itsSayantan/git-journal#readme",
+  "dependencies": {}
 }

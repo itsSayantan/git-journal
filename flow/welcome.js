@@ -5,7 +5,7 @@ const welcomeMessage = `*****************************
         GIT - JOURNAL
 *****************************`
 
-// dynamically find out the project from the package.json file
+// dynamically find out the project version from the package.json file
 const projectVersion = JSON.parse(fs.readFileSync(path.join(__dirname + '/../package.json'))).version
 
 const projectInformation = `\nVersion: ${projectVersion}\n\nProject URL: https://github.com/itsSayantan/git-journal`
@@ -16,7 +16,6 @@ const helpInformation = `\nEnter command: 'help' to get the list of commands or 
 
 const welcome = () => {
     // show the welcome message, only if the application is not being run in the debug mode
-
     if (process.env.NODE_DEBUG !== 'git-journal')
         console.clear()
 

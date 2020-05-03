@@ -58,8 +58,8 @@ Follow these steps to use ```backup``` and ```restore``` features.
 
 2. It is always recommended to run the ```restore``` command whenever you open ```git-journal``` as any local change creates commits and a later execution of ```backup``` or ```restore``` commands may result in conflicts which then have to be resolved manually as per the current version of ```git-journal```.
 
-3. Enter you git user id and password if you are being prompted in any of these commands.
+3. Enter your git user id and password if you are being prompted in any of these commands.
 
 4. After every ```backup``` operation, you can check your remote repository for all the commits that were made during the application usage. Notice there will be 'empty commits' for the backup operations. This is because the backup operation itself does not make any file changes, instead an empty commit helps keep better track of all your backups.
 
-5. Please note these are experimental commands and might be buggy. Feel free to raise issues with proper steps to reproduce the [issues page](https://github.com/itsSayantan/git-journal/issues) of ```git-journal```.
+5. Please note these are experimental commands and might be buggy. Feel free to raise issues with proper steps to reproduce them in the [issues page](https://github.com/itsSayantan/git-journal/issues) of ```git-journal```.
